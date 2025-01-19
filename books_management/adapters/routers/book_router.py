@@ -1,8 +1,13 @@
 from django.urls import path
 
-from books_management.adapters.controllers.book_views import BookRetrieveUpdateDestroy, BookListCreate
+from books_management.adapters.controllers.book_views import (
+    BookRetrieveUpdateDestroyView,
+    BookListCreateView,
+    AveragePriceView,
+)
 
 urlpatterns = [
-    path('book', BookListCreate.as_view(), name='book_list'),
-    path('book/<str:book_id>/', BookRetrieveUpdateDestroy.as_view(), name='book_detail'),
+    path('book', BookListCreateView.as_view(), name='book-list'),
+    path('book/<str:book_id>/', BookRetrieveUpdateDestroyView.as_view(), name='book-detail'),
+    path('book/average/<int:year>', AveragePriceView.as_view(), name='average-price'),
 ]

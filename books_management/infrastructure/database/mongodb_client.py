@@ -7,4 +7,8 @@ class MongoDBClient:
         self.database = self.client[database]
 
     def get_database(self):
+        """
+        Get the database instance
+        :return: Database instance
+        """
         return self.database

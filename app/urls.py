@@ -16,10 +16,13 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include, re_path
+from django.conf.urls.static import static
+from django.conf import settings
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from books_management.adapters.routers.book_router import urlpatterns as book_router
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -44,4 +47,4 @@ urlpatterns = [
             ]
         ),
     ),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

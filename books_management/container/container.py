@@ -1,12 +1,12 @@
 from dependency_injector import containers, providers
 from books_management.commons.logger import Logger
-from books_management.usecases.book_usecases import (
-    CreateBookUseCase,
-    GetBookUseCase,
-    GetBooksUseCase,
-    UpdateBookUseCase,
-    DeleteBookUseCase,
-)
+
+from books_management.usecases.get_books_use_case import GetBooksUseCase
+from books_management.usecases.create_book_use_case import CreateBookUseCase
+from books_management.usecases.get_book_use_case import GetBookUseCase
+from books_management.usecases.update_book_use_case import UpdateBookUseCase
+from books_management.usecases.delete_book_use_case import DeleteBookUseCase
+from books_management.usecases.average_price_book_usecases import AveragePriceUseCase
 from config.settings import mongo_settings
 from books_management.infrastructure.database.mongodb_client import MongoDBClient
 from books_management.infrastructure.repositories.book_repository import BookRepository
@@ -54,6 +54,11 @@ class Container(containers.DeclarativeContainer):
 
     delete_book_use_case = providers.Factory(
         DeleteBookUseCase,
+        book_repository=book_repository,
+    )
+
+    average_price_use_case = providers.Factory(
+        AveragePriceUseCase,
         book_repository=book_repository,
     )
 
