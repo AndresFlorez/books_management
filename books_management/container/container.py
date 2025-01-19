@@ -1,0 +1,61 @@
+from dependency_injector import containers, providers
+from books_management.commons.logger import Logger
+from books_management.usecases.book_usecases import (
+    CreateBookUseCase,
+    GetBookUseCase,
+    GetBooksUseCase,
+    UpdateBookUseCase,
+    DeleteBookUseCase,
+)
+from config.settings import mongo_settings
+from books_management.infrastructure.database.mongodb_client import MongoDBClient
+from books_management.infrastructure.repositories.book_repository import BookRepository
+
+
+class Container(containers.DeclarativeContainer):
+    config = providers.Configuration()
+
+    logger = providers.Factory(Logger)
+
+    db_client = providers.Singleton(
+        MongoDBClient,
+        host=mongo_settings.db_host,
+        port=mongo_settings.db_port,
+        user=mongo_settings.db_user,
+        password=mongo_settings.db_password,
+        database=mongo_settings.db_name,
+    )
+
+    book_repository = providers.Factory(
+        BookRepository,
+        db_client=db_client,
+        logger=logger,
+    )
+
+    get_books_use_case = providers.Factory(
+        GetBooksUseCase,
+        book_repository=book_repository,
+    )
+
+    create_book_use_case = providers.Factory(
+        CreateBookUseCase,
+        book_repository=book_repository,
+    )
+
+    get_book_use_case = providers.Factory(
+        GetBookUseCase,
+        book_repository=book_repository,
+    )
+
+    update_book_use_case = providers.Factory(
+        UpdateBookUseCase,
+        book_repository=book_repository,
+    )
+
+    delete_book_use_case = providers.Factory(
+        DeleteBookUseCase,
+        book_repository=book_repository,
+    )
+
+
+container = Container()
