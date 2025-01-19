@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Dict, List
 
 from books_management.entities.book import Book
 
 
 class BookRepositoryInterface(ABC):
     @abstractmethod
-    def find_all(self) -> List[Book]:
+    def find_all(self, filters: Dict) -> List[Book]:
         """
         Get all books from the database.
         :return: List of books.

@@ -16,13 +16,15 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include, re_path
-from django.conf.urls.static import static
-from django.conf import settings
+from django.contrib import admin
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from books_management.adapters.routers.book_router import urlpatterns as book_router
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -39,6 +41,9 @@ urlpatterns = [
         'books-management/',
         include(
             [
+                path('admin/', admin.site.urls),
+                path('token/', TokenObtainPairView.as_view(), name='token-obtain-pair'),
+                path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
                 path('', include(book_router)),
                 re_path(
                     r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'
@@ -47,4 +52,4 @@ urlpatterns = [
             ]
         ),
     ),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]

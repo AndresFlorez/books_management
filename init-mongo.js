@@ -57,6 +57,46 @@ if (!dbExists) {
             genre: 'Children',
             description: 'Description of Green Eggs and Ham',
             price: 6.99
+        },
+        {
+            title: '1984',
+            author: 'George Orwell',
+            published_date: new Date('1949-06-08'),
+            genre: 'Dystopian',
+            description: 'Description of 1984',
+            price: 9.99
+        },
+        {
+            title: 'Pride and Prejudice',
+            author: 'Jane Austen',
+            published_date: new Date('1813-01-28'),
+            genre: 'Romance',
+            description: 'Description of Pride and Prejudice',
+            price: 7.99
+        },
+        {
+            title: 'Moby-Dick',
+            author: 'Herman Melville',
+            published_date: new Date('1851-10-18'),
+            genre: 'Adventure',
+            description: 'Description of Moby-Dick',
+            price: 11.49
+        },
+        {
+            title: 'War and Peace',
+            author: 'Leo Tolstoy',
+            published_date: new Date('1869-01-01'),
+            genre: 'Historical',
+            description: 'Description of War and Peace',
+            price: 13.99
+        },
+        {
+            title: 'The Catcher in the Rye',
+            author: 'J.D. Salinger',
+            published_date: new Date('1951-07-16'),
+            genre: 'Fiction',
+            description: 'Description of The Catcher in the Rye',
+            price: 10.49
         }
     ]);
 }

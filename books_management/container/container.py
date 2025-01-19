@@ -10,6 +10,7 @@ from books_management.usecases.average_price_book_usecases import AveragePriceUs
 from config.settings import mongo_settings
 from books_management.infrastructure.database.mongodb_client import MongoDBClient
 from books_management.infrastructure.repositories.book_repository import BookRepository
+from books_management.infrastructure.database.mongodb_filters import proccess_filters
 
 
 class Container(containers.DeclarativeContainer):
@@ -35,6 +36,7 @@ class Container(containers.DeclarativeContainer):
     get_books_use_case = providers.Factory(
         GetBooksUseCase,
         book_repository=book_repository,
+        proccess_filters=proccess_filters,
     )
 
     create_book_use_case = providers.Factory(

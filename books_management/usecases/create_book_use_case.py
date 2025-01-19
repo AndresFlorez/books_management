@@ -1,5 +1,3 @@
-
-
 from books_management.entities.book import Book
 from books_management.infrastructure.repositories.interfaces.book_repository_interface import BookRepositoryInterface
 

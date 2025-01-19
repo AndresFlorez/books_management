@@ -1,6 +1,8 @@
 from datetime import datetime
 from logging import Logger
+from typing import Dict
 
+from books_management.commons.custom_exceptions import RecordNotFoundException
 from books_management.commons.object_id import validate_object_id
 from books_management.entities.book import Book
 from books_management.infrastructure.database.mongodb_client import MongoDBClient
@@ -12,15 +14,17 @@ class BookRepository(BookRepositoryInterface):
         self.collection = db_client.get_database()["books"]
         self.logger = logger
 
-    def find_all(self) -> list[Book]:
-        return [Book.model_validate(book) for book in self.collection.find()]
+    def find_all(self, filters: Dict) -> list[Book]:
+        self.logger.info(f"Finding books with filters: {filters}")
+        books = self.collection.find(filters)
+        return [Book.model_validate(book) for book in books]
 
     def get_by_id(self, book_id: str) -> Book:
         book_id = validate_object_id(book_id)
         db_book = self.collection.find_one({"_id": book_id})
         if not db_book:
             self.logger.error(f"Book with id {book_id} not found")
-            raise ValueError(f"Book with id {book_id} not found")
+            raise RecordNotFoundException(f"Book with id {book_id} not found")
         return Book.model_validate(db_book)
 
     def create(self, book: Book) -> Book:
