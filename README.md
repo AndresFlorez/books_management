@@ -33,23 +33,10 @@ DB_USER="root"
 DB_PASSWORD="root"
 ```
 
-4. Run Django migrations.
-
-```bash
-docker exec production-line-microservice python manage.py migrate
+```sh
+cp .env.example .env
 ```
-
-5. Create superuser
-
-```bash
-docker exec -it django_service python manage.py createsuperuser
-```
-
-
-
-## Execution
-
-To run the project, execute the following commands in the root directory of the project:
+4. To run the project, execute the following commands in the root directory of the project:
 
 ```bash
 docker-compose build
@@ -57,6 +44,18 @@ docker-compose build
 
 ```bash
 docker-compose up -d
+```
+
+4. Run Django migrations.
+
+```bash
+docker exec django_service python manage.py migrate
+```
+
+5. Create superuser
+
+```bash
+docker exec -it django_service python manage.py createsuperuser
 ```
 
 
@@ -71,3 +70,34 @@ docker exec -it django_service python manage.py test
 ## Test structure
 The tests in this project are located in the `books_management.tests` directory.
 
+
+## Swagger documentation
+
+To access the swagger documentation, go to the following URL:
+
+[http://localhost:8000/books-management/docs/](http://localhost:8000/books-management/docs/)
+
+## JWT Authentication
+
+To obtain a token, you must make a POST request to the following URL:
+
+[http://localhost:8000/books-management/token/](http://localhost:8000/books-management/token/)
+
+Send the following JSON in the request body:
+
+```json
+{
+    "username": "admin",
+    "password": "password"
+}
+```
+
+The user must be created previously.
+
+## Authentication
+
+The project uses JWT authentication. To access the book API, you must include the token in the request headers.
+
+```bash
+Bearer <token>
+```

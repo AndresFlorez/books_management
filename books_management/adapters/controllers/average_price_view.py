@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from dependency_injector.wiring import Provide
@@ -15,6 +16,7 @@ average_price_use_case: AveragePriceUseCase = Provide[Container.average_price_us
 
 class AveragePriceView(APIView):
     name = 'average-price'
+    permission_classes = (IsAuthenticated,)
 
     @swagger_auto_schema(
         operation_description="Retrieve the average price of books published in a given year",

@@ -133,7 +133,7 @@ SWAGGER_SETTINGS = {
             'in': 'header',
         },
         'USE_SESSION_AUTH': False,
-    }
+    },
 }
 
 # Rest framework settings
