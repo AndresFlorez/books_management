@@ -101,3 +101,42 @@ The project uses JWT authentication. To access the book API, you must include th
 ```bash
 Bearer <token>
 ```
+
+## Structure
+
+The project is structured as follows:
+
+```
+app/
+books_management/
+├── adapters/
+│   ├── controllers/
+│   └── routers/
+├── commons/
+├── entities/
+├── usecases/
+├── infrastructure/
+│   ├── database/
+│   └── repositories/
+```
+
+### app/
+This is the root directory of the Django project.
+
+### books_management/
+This directory contains the core application code following the principles of Clean Architecture.
+
+### adapters/
+This layer acts as a bridge between the external world and the internal application logic. It contains:
+
+- controllers/: DRF Views that handle HTTP requests and responses.
+- routers/: URL routers that map URLs to controllers.
+
+### commons/
+This directory contains common utilities and custom exceptions that can be used across the application.
+
+### entities/
+This directory contains the core business entities (models) of the application. These entities are simple data structures that represent the core business objects.
+
+### usecases/
+This directory contains the business logic of the application. Each use case represents a specific business operation and interacts with the repositories to perform the required actions.
