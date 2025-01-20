@@ -1,6 +1,7 @@
 from typing import Dict
 from dateutil.parser import parse as parse_date
 
+
 def proccess_filters(filters: Dict) -> Dict:
     processed_filters = {}
     for key, value in filters.items():
@@ -15,17 +16,21 @@ def proccess_filters(filters: Dict) -> Dict:
             processed_filters[key] = value
     return processed_filters
 
+
 def cast_value(value: str) -> str:
     try:
         return int(value)
-    except ValueError: pass
+    except ValueError:
+        pass
 
     try:
         return float(value)
-    except ValueError: pass
+    except ValueError:
+        pass
 
     try:
         return parse_date(value)
-    except ValueError: pass
+    except ValueError:
+        pass
 
     return value

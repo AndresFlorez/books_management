@@ -7,7 +7,7 @@ from drf_yasg import openapi
 
 from books_management.commons.logger import Logger
 from books_management.container.container import Container
-from books_management.usecases.average_price_book_usecases import AveragePriceUseCase
+from books_management.usecases.books_price_average_usecases import AveragePriceUseCase
 
 logger: Logger = Provide[Container.logger]
 average_price_use_case: AveragePriceUseCase = Provide[Container.average_price_use_case]
@@ -37,6 +37,7 @@ class AveragePriceView(APIView):
         parameters=[openapi.Parameter('year', openapi.IN_PATH, type=openapi.TYPE_INTEGER)],
     )
     def get(self, request, year):
+        """Retrieve the average price of books published in a given year"""
         try:
             average_price = average_price_use_case.execute(year)
         except ValueError as e:

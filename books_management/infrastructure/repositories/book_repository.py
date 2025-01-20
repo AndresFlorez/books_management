@@ -10,12 +10,12 @@ from books_management.infrastructure.repositories.interfaces.book_repository_int
 
 
 class BookRepository(BookRepositoryInterface):
-    def __init__(self, db_client: MongoDBClient, logger: Logger):
-        self.collection = db_client.get_database()["books"]
+    def __init__(self, db_client: MongoDBClient, logger: Logger, collection_name: str = "books"):
+        self.collection = db_client.database[collection_name]
+        self.collection_name = collection_name
         self.logger = logger
 
     def find_all(self, filters: Dict) -> list[Book]:
-        self.logger.info(f"Finding books with filters: {filters}")
         books = self.collection.find(filters)
         return [Book.model_validate(book) for book in books]
 
@@ -56,7 +56,7 @@ class BookRepository(BookRepositoryInterface):
             },
             {"$group": {"_id": None, "average_price": {"$avg": "$price"}}},
         ]
-        result = self.collection.aggregate(pipe_line).to_list(length=1)
+        result = list(self.collection.aggregate(pipe_line))
         if result:
             return result[0]["average_price"]
         return 0.0

@@ -46,6 +46,7 @@ class BookRetrieveUpdateDestroyView(APIView):
         parameters=[openapi.Parameter('book_id', openapi.IN_PATH, type=openapi.TYPE_STRING)],
     )
     def get(self, request, book_id):
+        """Retrieve a book"""
         try:
             book = get_book_use_case.execute(book_id)
         except ValueError as e:
@@ -74,21 +75,26 @@ class BookRetrieveUpdateDestroyView(APIView):
                 description="Errors in the request",
                 schema=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
-                    properties={"errors": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Schema(type=openapi.TYPE_OBJECT),
-                    )},
+                    properties={
+                        "errors": openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_OBJECT),
+                        )
+                    },
                 ),
             ),
         },
         parameters=[openapi.Parameter('book_id', openapi.IN_PATH, type=openapi.TYPE_STRING)],
     )
     def put(self, request, book_id):
+        """Update a book"""
         try:
             book = update_book_use_case.execute(book_id, request.data)
         except ValueError as e:
             logger.error(f"Error updating book: {e}")
-            return Response({"errors": json.loads(e.json())}, status=status.HTTP_400_BAD_REQUEST)
+            if hasattr(e, 'json'):
+                return Response({"errors": json.loads(e.json())}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(book, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
@@ -97,5 +103,6 @@ class BookRetrieveUpdateDestroyView(APIView):
         parameters=[openapi.Parameter('book_id', openapi.IN_PATH, type=openapi.TYPE_STRING)],
     )
     def delete(self, request, book_id):
+        """Delete a book"""
         delete_book_use_case.execute(book_id)
         return Response(status=status.HTTP_204_NO_CONTENT)

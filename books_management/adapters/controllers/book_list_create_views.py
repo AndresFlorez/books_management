@@ -52,6 +52,7 @@ class BookListCreateView(APIView):
         },
     )
     def get(self, request):
+        """Retrieve a list of books"""
         books = get_books_use_case.execute(request.GET.dict())
         return Response(books, status=status.HTTP_200_OK)
 
@@ -73,15 +74,18 @@ class BookListCreateView(APIView):
                 description="Errors in the request",
                 schema=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
-                    properties={"errors": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Schema(type=openapi.TYPE_OBJECT),
-                    )},
+                    properties={
+                        "errors": openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_OBJECT),
+                        )
+                    },
                 ),
             ),
         },
     )
     def post(self, request):
+        """Create a new book"""
         try:
             book = create_book_use_case.execute(request.data)
         except ValueError as e:
