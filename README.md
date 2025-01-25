@@ -77,6 +77,14 @@ To access the swagger documentation, go to the following URL:
 
 [http://localhost:8000/books-management/docs/](http://localhost:8000/books-management/docs/)
 
+Use endpoint `/token/` to obtain a token, put the token in the `Authorize` button and you will be able to access the other endpoints.
+
+Put the token in the following format:
+
+```bash
+Bearer <token>
+```
+
 ## JWT Authentication
 
 To obtain a token, you must make a POST request to the following URL:
@@ -99,7 +107,7 @@ The user must be created previously.
 The project uses JWT authentication. To access the book API, you must include the token in the request headers.
 
 ```bash
-Bearer <token>
+Authorization: Bearer <token>
 ```
 
 ## Structure

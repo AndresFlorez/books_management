@@ -10,4 +10,5 @@ errorlog = "-"
 capture_output = True
 # How verbose the Gunicorn error logs should be
 loglevel = "info"
+# Whether to reload the Gunicorn server on code changes
 reload = True

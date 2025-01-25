@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from datetime import timedelta
+import os
 from pathlib import Path
+from config.settings import django_settings, aws_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=7ndn^8w$)f_3sb$b(2@*s@$)96zj*gw+rhiee&=9egz9cjafa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = django_settings.debug
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = django_settings.allowed_hosts.split(',')
 
 
 # Application definition
@@ -117,7 +119,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = aws_settings.static_url
+
+# Media files
+MEDIA_URL = aws_settings.media_url
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -142,4 +148,30 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=8),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'USER_ID_FIELD': 'id',
+}
+
+# AWS settings
+AWS_ACCESS_KEY_ID = aws_settings.aws_access_key_id
+AWS_SECRET_ACCESS_KEY = aws_settings.aws_secret_access_key
+AWS_STORAGE_BUCKET_NAME = aws_settings.aws_storage_bucket_name
+AWS_S3_REGION_NAME = aws_settings.aws_s3_region_name
+AWS_S3_CUSTOM_DOMAIN = aws_settings.aws_s3_custom_domain
+
+AWS_QUERYSTRING_AUTH = aws_settings.aws_querystring_auth
+AWS_DEFAULT_ACL = aws_settings.aws_default_acl
+AWS_S3_OBJECT_PARAMETERS = aws_settings.aws_s3_object_parameters
+
+STORAGES = {
+    "default": {
+        "BACKEND": aws_settings.default_file_storage,
+        "OPTIONS": {
+            "location": "media",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": aws_settings.staticfiles_storage,
+        "OPTIONS": {
+            "location": "static_files",
+        },
+    },
 }
